@@ -4,7 +4,6 @@ import com.traveler.denomination.exception.CustomDividedByZeroException;
 import com.traveler.denomination.exception.PaymentNotPossibleException;
 import com.traveler.denomination.utils.ErrorCode;
 
-//
 
 public class Payment {
 
@@ -18,7 +17,6 @@ public class Payment {
 
             if (arr[i] <= amount) {
                 try {
-
                     count[i] = amount / arr[i];
                     amount -= arr[i] * count[i];
                 } catch (ArithmeticException err) {
@@ -26,8 +24,13 @@ public class Payment {
 
                 }
             } else {
-                throw new PaymentNotPossibleException(ErrorCode.PAYMENT_NOT_POSSIBLE);
+                count[i] = 0;
+
             }
+        }
+
+        if (amount != 0) {
+            throw new PaymentNotPossibleException(ErrorCode.PAYMENT_NOT_POSSIBLE);
         }
 
         printDenominationCount(arr, count);
@@ -37,6 +40,7 @@ public class Payment {
     private void printDenominationCount(int[] denominations, int[] count) {
         System.out.println("Your payment approach in order to give min no of notes will be: ");
         for (int i = 0; i < count.length; i++) {
+            if(count[i] == 0) continue;
             System.out.println(String.format("%d: %d", denominations[i], count[i]));
         }
     }
